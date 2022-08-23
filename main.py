@@ -18,27 +18,27 @@ date = ''
 time = ''
 context = ''
 resultSet = ''
-li=[]
-li1=[]
-ltvs=[]
-lim=[]
-li1m=[]
-ltvsm=[]
+li = []
+li1 = []
+ltvs = []
+lim = []
+li1m = []
+ltvsm = []
 bot = telebot.TeleBot(API_TOKEN)
 
-@bot.message_handler(commands=['help', 'start','Start'])
+
+@bot.message_handler(commands=['help', 'start', 'Start'])
 def Send_Welcome(message):
     cursor = mydb.cursor()
-    query = ("SELECT chatId FROM users WHERE chatId=%s")
+    query = "SELECT chatId FROM users WHERE chatId=%s"
     val = (message.chat.id,)
     cursor.execute(query, val)
     cursor.fetchall()
     if cursor.rowcount == 0:
-        msg = bot.reply_to(
-            message, 'Hi there, Welcome to Assignment Reminder Bot.\n\nSince this is your first time here , Please Enter a Username : \n\n/Exit')
+        msg = bot.reply_to(message, 'Hello, Welcome to the Bot.\n\n Pls Enter a Username: \n\n/Exit')
         bot.register_next_step_handler(msg, Register_User)
     else:
-        query = ("SELECT chatId, displayName FROM users WHERE chatId=%s")
+        query = "SELECT chatId, displayName FROM users WHERE chatId=%s"
         val = (message.chat.id,)
         cursor.execute(query, val)
         resultSet = cursor.fetchone()
@@ -319,13 +319,13 @@ def Add_Context(message):
     value = message.text
     global time
     time = time+':'+value
-    global categoryId
+    global categoryId,msg
     if value == '/Exit':
         markup = types.ReplyKeyboardMarkup()
         itembtn = types.KeyboardButton('/Start')
         markup.add(itembtn)
         msg = bot.reply_to(message, 'Well then, Good Bye.')
-        bot.register_next_step_handler(msg, Send_Welcome,reply_markup=markupome)
+        bot.register_next_step_handler(msg, Send_Welcome,reply_markup=markup)
     else:    
         markup = types.ReplyKeyboardMarkup()
         markup = types.ReplyKeyboardRemove(selective=False)
@@ -431,6 +431,7 @@ def View_Reminders(message):
 
 @bot.message_handler(commands=['Delete_Reminders'])
 def Delete_Reminders(message):
+    global msgstr
     value = message.text
     if value == '/Exit':
         markup = types.ReplyKeyboardMarkup()
