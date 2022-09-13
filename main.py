@@ -12,7 +12,7 @@ mydb = mysql.connector.connect(
 )
 mycursor = mydb.cursor(buffered=True)
 API_TOKEN = "5553951620:AAEcqn7mrd2OGmrT6HZNbdrr5Y0wR1RYD1I"
-categories = {"Birthday": 1, "Anniversary": 2, "Meeting": 3, "Task": 4, "Other": 5}
+categories = {"Meeting": 1, "Task": 2, "Other": 3}
 categoryId = 0
 date = ''
 time = ''
@@ -87,6 +87,8 @@ def Register_User(message):
 
 @bot.message_handler(commands=['Add_Reminder'])
 def Add_Reminder(message):
+    global time_add_1
+    time_add_1 = datetime.now()
     value = message.text
     if value == '/Exit':
         markup = types.ReplyKeyboardMarkup()
@@ -96,18 +98,16 @@ def Add_Reminder(message):
         bot.register_next_step_handler(msg, Send_Welcome)
     else:
         markup = types.ReplyKeyboardMarkup(row_width=2)
-        itembtn1 = types.KeyboardButton('/Birthday')
-        itembtn2 = types.KeyboardButton('/Anniversary')
-        itembtn3 = types.KeyboardButton('/Meeting')
-        itembtn4 = types.KeyboardButton('/Task')
-        itembtn5 = types.KeyboardButton('/Other')
-        itembtn6 = types.KeyboardButton('/Exit')
-        markup.add(itembtn1,itembtn2,itembtn3,itembtn4,itembtn5,itembtn6)
+        itembtn1 = types.KeyboardButton('/Meeting')
+        itembtn2 = types.KeyboardButton('/Task')
+        itembtn3 = types.KeyboardButton('/Other')
+        itembtn4 = types.KeyboardButton('/Exit')
+        markup.add(itembtn1,itembtn2,itembtn3,itembtn4)
         msg = bot.reply_to(message, "Please select a category for the new reminder:",reply_markup=markup)
-        bot.register_next_step_handler(msg, Add_Category_Reminder_Date)
+        bot.register_next_step_handler(msg, Add_Category_Reminder_Start_Date)
 
 
-def Add_Category_Reminder_Date(message):
+def Add_Category_Reminder_Start_Date(message):
     value = message.text
     if value == '/Exit':
         markup = types.ReplyKeyboardMarkup()
@@ -116,10 +116,13 @@ def Add_Category_Reminder_Date(message):
         msg = bot.reply_to(message, 'Well then, Good Bye.',reply_markup=markup)
         bot.register_next_step_handler(msg, Send_Welcome)
     else:
+        print(value)
         value=value.replace('/','')
         global categories
         global categoryId
         categoryId = categories[value]
+        print(categories)
+        print(categoryId)
         markup = types.ReplyKeyboardMarkup(row_width=6)
         itembtn1 = types.KeyboardButton('01')
         itembtn2 = types.KeyboardButton('02')
@@ -153,7 +156,7 @@ def Add_Category_Reminder_Date(message):
         itembtn20 = types.KeyboardButton('20')
         itembtn31 = types.KeyboardButton('31')
         markup.add(itembtn1,itembtn2,itembtn3,itembtn4,itembtn5,itembtn6,itembtn7,itembtn8,itembtn9,itembtn10,itembtn11,itembtn12,itembtn13,itembtn14,itembtn15,itembtn16,itembtn17,itembtn18,itembtn19,itembtn20,itembtn21,itembtn22,itembtn23,itembtn24,itembtn25,itembtn26,itembtn27,itembtn28,itembtn29,itembtn20,itembtn31)
-        msg = bot.reply_to(message, 'Enter Date :\n\n/Exit',reply_markup=markup)
+        msg = bot.reply_to(message, 'Enter Start Date :\n\n/Exit',reply_markup=markup)
         bot.register_next_step_handler(msg, Add_Month)
 
 def Add_Month(message):
@@ -220,9 +223,7 @@ def Add_Year(message):
             value = '12'
         date = value + '-' + date  
         markup = types.ReplyKeyboardMarkup(row_width=4) 
-        y2019 = types.KeyboardButton('2019')
-        y2020 = types.KeyboardButton('2020')
-        y2021 = types.KeyboardButton('2021')
+
         y2022 = types.KeyboardButton('2022')
         y2023 = types.KeyboardButton('2023')
         y2024 = types.KeyboardButton('2024')
@@ -232,7 +233,7 @@ def Add_Year(message):
         y2028 = types.KeyboardButton('2028')
         y2029 = types.KeyboardButton('2029')
         y2030 = types.KeyboardButton('2030')
-        markup.add(y2019,y2020,y2021,y2022,y2023,y2024,y2025,y2026,y2027,y2028,y2029,y2030)
+        markup.add(y2022,y2023,y2024,y2025,y2026,y2027,y2028,y2029,y2030)
         msg = bot.reply_to(message, 'Enter Year :\n\n/Exit',reply_markup=markup)
         bot.register_next_step_handler(msg, Add_Time)        
 
@@ -284,11 +285,11 @@ def Add_Minute(message):
         markup.add(itembtn)
         msg = bot.reply_to(message, 'Well then, Good Bye.',reply_markup=markup)
         bot.register_next_step_handler(msg, Send_Welcome)
-    else:        
+    else:
         global time
         time = value[0:2]
-        time1=value[3:6] 
-        tmp=0 
+        time1=value[3:6]
+        tmp=0
         if(time1=="AM" and time=="12"):
             time="00"
         elif(time1=="PM" and time=="12"):
@@ -314,6 +315,7 @@ def Add_Minute(message):
         markup.add(itembtn1,itembtn2,itembtn3,itembtn4,itembtn5,itembtn6,itembtn7,itembtn8,itembtn9,itembtn10,itembtn11,itembtn12)
         msg = bot.reply_to(message, 'Enter Minute :\n\n/Exit',reply_markup=markup)
         bot.register_next_step_handler(msg, Add_Context)
+        #bot.register_next_step_handler(msg, Add_Category_Reminder_End_Date)
 
 def Add_Context(message):
     value = message.text
@@ -329,24 +331,19 @@ def Add_Context(message):
     else:    
         markup = types.ReplyKeyboardMarkup()
         markup = types.ReplyKeyboardRemove(selective=False)
-        if categoryId == 1 :
-            msg = bot.reply_to(message, 'Whose Birthday it is ?',reply_markup=markup)       
-        elif categoryId == 2 :
-            msg = bot.reply_to(message, 'Whose Anniversary it is ?',reply_markup=markup)
-        elif categoryId == 3 :
-            msg = bot.reply_to(message, 'Where is the meeting ?',reply_markup=markup)
-        elif categoryId == 4 :
-            msg = bot.reply_to(message, 'What task it is ?',reply_markup=markup)
-        elif categoryId == 4:
-            msg = bot.reply_to(message, 'What reminder it is ?',reply_markup=markup)
-        bot.register_next_step_handler(msg, Add_Reminder_To_DB)   
 
-def Add_Reminder_To_DB(message):
+        if categoryId == 1 :
+            msg = bot.reply_to(message, 'Where is the meeting ?',reply_markup=markup)
+        elif categoryId == 2 :
+            msg = bot.reply_to(message, 'What task it is ?',reply_markup=markup)
+        elif categoryId == 3:
+            msg = bot.reply_to(message, 'What reminder it is ?',reply_markup=markup)
+        #bot.register_next_step_handler(msg, Add_Category_Reminder_End_Date)
+        bot.register_next_step_handler(msg, Add_Category_Reminder_End_Date)
+
+
+def Add_Category_Reminder_End_Date(message):
     value = message.text
-    global categoryId
-    global date
-    global time
-    global output
     if value == '/Exit':
         markup = types.ReplyKeyboardMarkup()
         itembtn = types.KeyboardButton('/Start')
@@ -354,39 +351,156 @@ def Add_Reminder_To_DB(message):
         msg = bot.reply_to(message, 'Well then, Good Bye.',reply_markup=markup)
         bot.register_next_step_handler(msg, Send_Welcome)
     else:
+
+        markup = types.ReplyKeyboardMarkup(row_width=6)
+        itembtn1 = types.KeyboardButton('01')
+        itembtn2 = types.KeyboardButton('02')
+        itembtn3 = types.KeyboardButton('03')
+        itembtn4 = types.KeyboardButton('04')
+        itembtn5 = types.KeyboardButton('05')
+        itembtn6 = types.KeyboardButton('06')
+        itembtn7 = types.KeyboardButton('07')
+        itembtn8 = types.KeyboardButton('08')
+        itembtn9 = types.KeyboardButton('09')
+        itembtn10 = types.KeyboardButton('10')
+        itembtn11 = types.KeyboardButton('11')
+        itembtn12 = types.KeyboardButton('12')
+        itembtn13 = types.KeyboardButton('13')
+        itembtn14 = types.KeyboardButton('14')
+        itembtn15 = types.KeyboardButton('15')
+        itembtn16 = types.KeyboardButton('16')
+        itembtn17 = types.KeyboardButton('17')
+        itembtn18 = types.KeyboardButton('18')
+        itembtn19 = types.KeyboardButton('19')
+        itembtn20 = types.KeyboardButton('20')
+        itembtn21 = types.KeyboardButton('21')
+        itembtn22 = types.KeyboardButton('22')
+        itembtn23 = types.KeyboardButton('23')
+        itembtn24 = types.KeyboardButton('24')
+        itembtn25 = types.KeyboardButton('25')
+        itembtn26 = types.KeyboardButton('26')
+        itembtn27 = types.KeyboardButton('27')
+        itembtn28 = types.KeyboardButton('28')
+        itembtn29 = types.KeyboardButton('29')
+        itembtn20 = types.KeyboardButton('20')
+        itembtn31 = types.KeyboardButton('31')
+        markup.add(itembtn1,itembtn2,itembtn3,itembtn4,itembtn5,itembtn6,itembtn7,itembtn8,itembtn9,itembtn10,itembtn11,itembtn12,itembtn13,itembtn14,itembtn15,itembtn16,itembtn17,itembtn18,itembtn19,itembtn20,itembtn21,itembtn22,itembtn23,itembtn24,itembtn25,itembtn26,itembtn27,itembtn28,itembtn29,itembtn20,itembtn31)
+        msg1 = bot.reply_to(message, 'Enter End Date :\n\n/Exit',reply_markup=markup)
+        bot.register_next_step_handler(msg1,Add_End_Month)
+
+def Add_End_Month(message):
+    value = message.text
+    global date1
+    if value == '/Exit':
+        markup = types.ReplyKeyboardMarkup()
+        itembtn = types.KeyboardButton('/Start')
+        markup.add(itembtn)
+        msg = bot.reply_to(message, 'Well then, Good Bye.',reply_markup=markup)
+        bot.register_next_step_handler(msg, Send_Welcome)
+    elif re.match(r"^(0?[1-9]|[12][0-9]|3[01])$", str(value)):
+
+        date1 = value
+        markup = types.ReplyKeyboardMarkup(row_width=3)
+        jan = types.KeyboardButton('January')
+        feb = types.KeyboardButton('February')
+        mar = types.KeyboardButton('March')
+        apr = types.KeyboardButton('April')
+        may = types.KeyboardButton('May')
+        jun = types.KeyboardButton('June')
+        jul = types.KeyboardButton('July')
+        aug = types.KeyboardButton('August')
+        sep = types.KeyboardButton('September')
+        oct = types.KeyboardButton('October')
+        nov = types.KeyboardButton('November')
+        dec = types.KeyboardButton('December')
+        markup.add(jan,feb,mar,apr,may,jun,jul,aug,sep,oct,nov,dec)
+        msg1 = bot.reply_to(message, 'Enter Month :\n\n/Exit',reply_markup=markup)
+        bot.register_next_step_handler(msg1, Add_End_Year)
+
+def Add_End_Year(message):
+    value = message.text
+    global date1
+    if value == '/Exit':
+        markup = types.ReplyKeyboardMarkup()
+        itembtn = types.KeyboardButton('/Start')
+        markup.add(itembtn)
+        msg = bot.reply_to(message, 'Well then, Good Bye.',reply_markup=markup)
+        bot.register_next_step_handler(msg, Send_Welcome)
+    else :
+
+        if(value=='January'):
+            value = '01'
+        if(value=='February'):
+            value = '02'
+        if(value=='March'):
+            value = '03'
+        if(value=='April'):
+            value = '04'
+        if(value=='May'):
+            value = '05'
+        if(value=='June'):
+            value = '06'
+        if(value=='July'):
+            value = '07'
+        if(value=='August'):
+            value = '08'
+        if(value=='September'):
+            value = '09'
+        if(value=='October'):
+            value = '10'
+        if(value=='November'):
+            value = '11'
+        if(value=='December'):
+            value = '12'
+
+        date1 = value + '-' + date1
+        markup = types.ReplyKeyboardMarkup(row_width=4)
+
+        y2022 = types.KeyboardButton('2022')
+        y2023 = types.KeyboardButton('2023')
+        y2024 = types.KeyboardButton('2024')
+        y2025 = types.KeyboardButton('2025')
+        y2026 = types.KeyboardButton('2026')
+        y2027 = types.KeyboardButton('2027')
+        y2028 = types.KeyboardButton('2028')
+        y2029 = types.KeyboardButton('2029')
+        y2030 = types.KeyboardButton('2030')
+        markup.add(y2022,y2023,y2024,y2025,y2026,y2027,y2028,y2029,y2030)
+        msg = bot.reply_to(message, 'Enter Year :\n\n/Exit',reply_markup=markup)
+        bot.register_next_step_handler(msg, Add_Reminder_To_DB)
+
+
+def Add_Reminder_To_DB(message):
+    value = message.text
+    global date1,start_date,end_date
+    global output,categoryId
+    if value == '/Exit':
+        markup = types.ReplyKeyboardMarkup()
+        itembtn = types.KeyboardButton('/Start')
+        markup.add(itembtn)
+        msg = bot.reply_to(message, 'Well then, Good Bye.',reply_markup=markup)
+        bot.register_next_step_handler(msg, Send_Welcome)
+    else:
+        date1 = value + '-' + date1
         if categoryId == 1:
             cursor = mydb.cursor()
-            query = ("INSERT INTO reminders(chatId, date, time, message) VALUES (%s,%s,%s,%s)")
-            output = 'Reminder : Wish Happy Birthday to '+str(value)
-            val = (message.chat.id, date, time, output)
+            query = ("INSERT INTO reminders(chatId, date, time, message,end_date) VALUES (%s,%s,%s,%s,%s)")
+            output = 'Reminder : You have a meeting at '+str(value)
+            val = (message.chat.id, date, time, output,date1)
             cursor.execute(query, val)
             mydb.commit()
         elif categoryId == 2:
             cursor = mydb.cursor()
-            query = ("INSERT INTO reminders(chatId, date, time, message) VALUES (%s,%s,%s,%s)")
-            output = 'Reminder : Wish Happy Anniversary to '+str(value)
-            val = (message.chat.id, date, time, output)
+            query = ("INSERT INTO reminders(chatId, date, time, message,end_date) VALUES (%s,%s,%s,%s,%s)")
+            output = 'Reminder : You have to '+str(value)
+            val = (message.chat.id, date, time, output,date1)
             cursor.execute(query, val)
             mydb.commit()
         elif categoryId == 3:
             cursor = mydb.cursor()
-            query = ("INSERT INTO reminders(chatId, date, time, message) VALUES (%s,%s,%s,%s)")
-            output = 'Reminder : You have a meeting at '+str(value)
-            val = (message.chat.id, date, time, output)
-            cursor.execute(query, val)
-            mydb.commit()
-        elif categoryId == 4:
-            cursor = mydb.cursor()
-            query = ("INSERT INTO reminders(chatId, date, time, message) VALUES (%s,%s,%s,%s)")
-            output = 'Reminder : You have to '+str(value)
-            val = (message.chat.id, date, time, output)
-            cursor.execute(query, val)
-            mydb.commit()
-        elif categoryId == 5:
-            cursor = mydb.cursor()
-            query = ("INSERT INTO reminders(chatId, date, time, message) VALUES (%s,%s,%s,%s)")
+            query = ("INSERT INTO reminders(chatId, date, time, message,end_date) VALUES (%s,%s,%s,%s,%s)")
             output = 'Reminder : '+str(value)
-            val = (message.chat.id, date, time, output)
+            val = (message.chat.id, date, time, output ,date1)
             cursor.execute(query, val)
             mydb.commit()
         msg = bot.reply_to(message, 'Reminder Added \n/Add_Reminder \n/Exit')
@@ -395,9 +509,13 @@ def Add_Reminder_To_DB(message):
             bot.send_message(message.chat.id, output)
 
         sched = BlockingScheduler()
-        sched.add_job(reminder_update, 'date', timezone="Asia/Kolkata",run_date=datetime(int(date[0:4]), int(date[5:7]), int(date[8:10]), int(time[0:2]), int( time[3:])))
-
+        start_date = datetime(int(date[0:4]), int(date[4:5]), int(date[5:7]))
+        end_date = datetime(int(date1[0:4]), int(date1[4:5]), int(date1[5:7]))
+        n = (end_date - start_date).days
+        for i in range(0, n):
+            sched.add_job(job_function, 'date', timezone="Asia/Kolkata", run_date=(datetime(int(date[0:4]), int(date[4:5]), int(date[5:7]), int(date[7:9]),int(date[9:])) + timedelta(days=i)))
         sched.start()
+
 @bot.message_handler(commands=['View_Reminders'])
 def View_Reminders(message):
     value = message.text
