@@ -3,7 +3,7 @@ from apscheduler.schedulers.blocking import BlockingScheduler
 from telebot import types
 import mysql.connector
 import re
-from datetime import datetime
+from datetime import datetime,timedelta
 mydb = mysql.connector.connect(
   host="localhost",
   user="root",
@@ -116,13 +116,10 @@ def Add_Category_Reminder_Start_Date(message):
         msg = bot.reply_to(message, 'Well then, Good Bye.',reply_markup=markup)
         bot.register_next_step_handler(msg, Send_Welcome)
     else:
-        print(value)
         value=value.replace('/','')
         global categories
         global categoryId
         categoryId = categories[value]
-        print(categories)
-        print(categoryId)
         markup = types.ReplyKeyboardMarkup(row_width=6)
         itembtn1 = types.KeyboardButton('01')
         itembtn2 = types.KeyboardButton('02')
@@ -509,11 +506,11 @@ def Add_Reminder_To_DB(message):
             bot.send_message(message.chat.id, output)
 
         sched = BlockingScheduler()
-        start_date = datetime(int(date[0:4]), int(date[4:5]), int(date[5:7]))
-        end_date = datetime(int(date1[0:4]), int(date1[4:5]), int(date1[5:7]))
+        start_date = datetime(int(date[0:4]), int(date[5:7]), int(date[8:10]))
+        end_date = datetime(int(date1[0:4]), int(date1[5:7]), int(date1[8:]))
         n = (end_date - start_date).days
         for i in range(0, n):
-            sched.add_job(job_function, 'date', timezone="Asia/Kolkata", run_date=(datetime(int(date[0:4]), int(date[4:5]), int(date[5:7]), int(date[7:9]),int(date[9:])) + timedelta(days=i)))
+            sched.add_job(reminder_update, 'date', timezone="Asia/Kolkata", run_date=(datetime(int(date[0:4]), int(date[5:7]), int(date[8:10]), int(time[0:2]),int(time[3:])) + timedelta(days=i)))
         sched.start()
 
 @bot.message_handler(commands=['View_Reminders'])
