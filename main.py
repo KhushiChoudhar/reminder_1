@@ -11,7 +11,7 @@ from flask import Flask, request
 mydb = mysql.connector.connect(
     host="localhost",
     user="root",
-    password="Karishma@26",
+    password=" ",
     database="reminder"
 )
 
@@ -30,7 +30,7 @@ lim = []
 li1m = []
 ltvsm = []
 
-API_TOKEN = "5747567382:AAHVLpTnbc1hIqHz8K6hCBzjQ6DP4MPfR_o"
+API_TOKEN = ""
 bot = telebot.TeleBot(API_TOKEN)
 
 app = Flask(__name__)
