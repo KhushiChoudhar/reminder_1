@@ -23,13 +23,26 @@ DROP TABLE IF EXISTS `reminders`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `reminders` (
+  `Serial_number` int NOT NULL AUTO_INCREMENT,
   `chatId` varchar(100) NOT NULL,
   `date` varchar(20) NOT NULL,
   `time` varchar(20) NOT NULL,
   `message` varchar(200) NOT NULL,
-  PRIMARY KEY (`chatId`,`date`,`time`,`message`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+  `end_date` varchar(20) DEFAULT NULL,
+  `Completed_bool` varchar(20) DEFAULT NULL,
+  PRIMARY KEY (`Serial_number`)
+) ENGINE=InnoDB AUTO_INCREMENT=20 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `reminders`
+--
+
+LOCK TABLES `reminders` WRITE;
+/*!40000 ALTER TABLE `reminders` DISABLE KEYS */;
+INSERT INTO `reminders` VALUES (9,'963260462','2022-11-20','01:20','Reminder : You have a meeting at Delhi','2022-11-28',NULL),(12,'963260462','2022-11-20','01:35','Reminder : You have a meeting at hawaii','2022-11-30','NULL'),(13,'963260462','2022-11-20','01:40','Reminder : You have a meeting at jamaica','2022-11-29',NULL),(14,'963260462','2022-11-20','01:40','Reminder : You have a meeting at hhh','2022-11-29','NULL'),(15,'963260462','2022-11-20','01:45','Reminder : You have a meeting at asdfghjk','2022-12-31','NULL'),(16,'963260462','2022-11-20','02:00','Reminder : You have a meeting at asdfghnvbnm','2022-11-29',NULL),(17,'963260462','2022-11-20','02:00','Reminder : You have a meeting at qwertyuio','2022-11-28','yes'),(19,'963260462','2022-11-20','03:40','Reminder : You have a meeting at ZXCVBNM','2022-12-31','yes');
+/*!40000 ALTER TABLE `reminders` ENABLE KEYS */;
+UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
@@ -40,4 +53,4 @@ CREATE TABLE `reminders` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2022-07-16 23:44:59
+-- Dump completed on 2022-11-30  2:05:17

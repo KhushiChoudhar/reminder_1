@@ -28,6 +28,16 @@ CREATE TABLE `users` (
   PRIMARY KEY (`chatId`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `users`
+--
+
+LOCK TABLES `users` WRITE;
+/*!40000 ALTER TABLE `users` DISABLE KEYS */;
+INSERT INTO `users` VALUES ('1299851033','Devanshi J'),('1607080186','Kj'),('1693080411','Khushi'),('1697240192','Aditi'),('5165972315','Khushi'),('5183141843','Karishma'),('5193078574','Tamanna'),('882633190','Rahul'),('905640049','Khushi'),('963260462','Kavya');
+/*!40000 ALTER TABLE `users` ENABLE KEYS */;
+UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
@@ -38,4 +48,4 @@ CREATE TABLE `users` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2022-07-16 23:44:59
+-- Dump completed on 2022-11-30  2:05:17
