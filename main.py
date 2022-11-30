@@ -9,10 +9,10 @@ import matplotlib.pyplot as plt
 from flask import Flask, request
 
 mydb = mysql.connector.connect(
-    host=server,
-    user=username,
-    password=pwd,
-    database=database_name
+    host="sql6.freemysqlhosting.net",
+    user="sql6581958",
+    password="AaQa6HMUZ9",
+    database="sql6581958"
 )
 
 mycursor = mydb.cursor(buffered=True)
