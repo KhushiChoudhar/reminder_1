@@ -9,9 +9,9 @@ import matplotlib.pyplot as plt
 from flask import Flask, request
 
 mydb = mysql.connector.connect(
-    host=server
-    user=username
-    password=pwd
+    host=server,
+    user=username,
+    password=pwd,
     database=database_name
 )
 
