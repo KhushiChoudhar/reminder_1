@@ -16,6 +16,7 @@ mydb = mysql.connector.connect(
 )
 
 mycursor = mydb.cursor(buffered=True)
+API_TOKEN = "5553951620:AAEcqn7mrd2OGmrT6HZNbdrr5Y0wR1RYD1I"
 
 categories = {"Meeting": 1, "Task": 2, "Other": 3}
 categoryId = 0
