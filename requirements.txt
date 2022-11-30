@@ -5,3 +5,4 @@ pyTelegramBotAPI
 requests		
 bob-telegram-tools	
 matplotlib	
+gunicorn
