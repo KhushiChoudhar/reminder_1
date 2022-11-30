@@ -11,7 +11,7 @@ from flask import Flask, request
 mydb = mysql.connector.connect(
     host="localhost",
     user="root",
-    password="karishma@26",
+    password="kavya",
     database="reminder"
 )
 
