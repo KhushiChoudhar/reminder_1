@@ -9,14 +9,14 @@ import matplotlib.pyplot as plt
 from flask import Flask, request
 
 mydb = mysql.connector.connect(
-    host="",
-    user="",
-    password="",
-    database=""
+    host="sql6.freemysqlhosting.net",
+    user="sql6581958",
+    password="AaQa6HMUZ9",
+    database="sql6581958"
 )
 
 mycursor = mydb.cursor(buffered=True)
-API_TOKEN = ""
+
 
 categories = {"Meeting": 1, "Task": 2, "Other": 3}
 categoryId = 0
@@ -31,7 +31,7 @@ lim = []
 li1m = []
 ltvsm = []
 
-API_TOKEN = ""
+API_TOKEN = "5553951620:AAEcqn7mrd2OGmrT6HZNbdrr5Y0wR1RYD1I"
 bot = telebot.TeleBot(API_TOKEN)
 
 app = Flask(__name__)
