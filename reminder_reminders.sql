@@ -31,7 +31,7 @@ CREATE TABLE `reminders` (
   `end_date` varchar(20) DEFAULT NULL,
   `Completed_bool` varchar(20) DEFAULT NULL,
   PRIMARY KEY (`Serial_number`)
-) ENGINE=InnoDB AUTO_INCREMENT=20 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=25 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -40,7 +40,6 @@ CREATE TABLE `reminders` (
 
 LOCK TABLES `reminders` WRITE;
 /*!40000 ALTER TABLE `reminders` DISABLE KEYS */;
-INSERT INTO `reminders` VALUES (9,'963260462','2022-11-20','01:20','Reminder : You have a meeting at Delhi','2022-11-28',NULL),(12,'963260462','2022-11-20','01:35','Reminder : You have a meeting at hawaii','2022-11-30','NULL'),(13,'963260462','2022-11-20','01:40','Reminder : You have a meeting at jamaica','2022-11-29',NULL),(14,'963260462','2022-11-20','01:40','Reminder : You have a meeting at hhh','2022-11-29','NULL'),(15,'963260462','2022-11-20','01:45','Reminder : You have a meeting at asdfghjk','2022-12-31','NULL'),(16,'963260462','2022-11-20','02:00','Reminder : You have a meeting at asdfghnvbnm','2022-11-29',NULL),(17,'963260462','2022-11-20','02:00','Reminder : You have a meeting at qwertyuio','2022-11-28','yes'),(19,'963260462','2022-11-20','03:40','Reminder : You have a meeting at ZXCVBNM','2022-12-31','yes');
 /*!40000 ALTER TABLE `reminders` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -53,4 +52,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2022-11-30  2:05:17
+-- Dump completed on 2022-12-30  0:59:42
