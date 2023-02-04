@@ -1,6 +1,5 @@
 APScheduler	
 Flask	
-mysql-connector-python	
 pyTelegramBotAPI	
 requests		
 bob-telegram-tools	
