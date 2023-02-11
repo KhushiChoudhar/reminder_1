@@ -9,9 +9,9 @@ import firebase_admin
 import asyncio
 from flask import Flask,request
 from firebase_admin import credentials,db,firestore
-cred = firebase_admin.credentials.Certificate("C:/Windows/System32/pythonreminderbotcb-firebase-adminsdk-5d124-aabe35c9c7.json")
+cred = firebase_admin.credentials.Certificate("F:/downloads/telebot-1ec79-firebase-adminsdk-ljttw-afb7759f90.json")
 default_app = firebase_admin.initialize_app(cred, {
-	'databaseURL': "https://pythonreminderbotcb-default-rtdb.asia-southeast1.firebasedatabase.app"
+	'databaseURL': "https://telebot-1ec79-default-rtdb.firebaseio.com"
 	})
 firestore_client = firebase_admin.firestore.client()
 ref_for_user_table = firebase_admin.db.reference("/user")
