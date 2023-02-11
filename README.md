@@ -26,7 +26,7 @@ https://docs.google.com/document/d/1-any88-IiThF0nnvF3d3HrZSnXFvwC-x9hFsUy3StkQ/
 
 ## Future Scope
 
-we will include a voice command prompt so that our bot can reat/respond to voice messages/commaands
+we will include a voice command prompt so that our bot can reat/respond to voice messages/commands
 
 
 
