@@ -10,7 +10,7 @@ import asyncio
 from flask import Flask,request
 from firebase_admin import credentials,db,firestore
 from firebase_admin import initialize_app, delete_app, get_app
-
+API_TOKEN = "5553951620:AAEcqn7mrd2OGmrT6HZNbdrr5Y0wR1RYD1I"
 try:
     default_app = get_app()
 except ValueError:
@@ -28,7 +28,6 @@ firestore_client = firebase_admin.firestore.client()
 ref_for_user_table = firebase_admin.db.reference("/user")
 ref_for_reminder_table = firebase_admin.db.reference("/reminder")
 
-API_TOKEN = ""
 categories = {"Meeting": 1, "Task": 2, "Other": 3}
 categoryId = 0
 date = ''
