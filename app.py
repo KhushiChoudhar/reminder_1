@@ -10,7 +10,8 @@ import asyncio
 from flask import Flask,request
 from firebase_admin import credentials,db,firestore
 cred = firebase_admin.credentials.Certificate("telebot.json")
-default_app = firebase_admin.initialize_app(cred, {
+firebase_admin.intialize_app(cred,name="this_App")
+Default_App = firebase_admin.initialize_app(cred, {
 	'databaseURL': "https://telebot-1ec79-default-rtdb.firebaseio.com"
 	})
 firestore_client = firebase_admin.firestore.client()
