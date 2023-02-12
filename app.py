@@ -34,7 +34,9 @@ cred = credentials.Certificate({
   "client_x509_cert_url": os.environ.get("FIREBASE_CLIENT_X509_CERT_URL")
 })
 
-firebase_admin.initialize_app(cred)
+default_app = firebase_admin.initialize_app(cred, {
+	'databaseURL': "https://telebot-1ec79-default-rtdb.firebaseio.com"
+	})
 firestore_client = firebase_admin.firestore.client()
 ref_for_user_table = firebase_admin.db.reference("/user")
 ref_for_reminder_table = firebase_admin.db.reference("/reminder")
