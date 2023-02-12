@@ -21,9 +21,9 @@ try:
 except ValueError:
     pass
 cred = firebase_admin.credentials.Certificate("telebot.json")
-Default_App = firebase_admin.initialize_app(cred, {
+default_app = firebase_admin.initialize_app(cred, {
 	'databaseURL': "https://telebot-1ec79-default-rtdb.firebaseio.com"
-	},name="remapp")
+	})
 firestore_client = firebase_admin.firestore.client()
 ref_for_user_table = firebase_admin.db.reference("/user")
 ref_for_reminder_table = firebase_admin.db.reference("/reminder")
