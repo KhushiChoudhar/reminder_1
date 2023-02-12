@@ -1,3 +1,4 @@
+import streamlit as st
 import telebot
 from apscheduler.schedulers.blocking import BlockingScheduler
 from telebot import types
@@ -40,7 +41,7 @@ lim = []
 li1m = []
 ltvsm = []
 
-bot = telebot.TeleBot(API_TOKEN)
+bot = telebot.TeleBot(st.secrets["API_TOKEN"])
 app = Flask(__name__)
 @app.route('/')
 @bot.message_handler(commands=['start', 'Start','help','What can u do for me'])
