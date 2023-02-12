@@ -10,7 +10,6 @@ import asyncio
 from flask import Flask,request
 from firebase_admin import credentials,db,firestore
 from firebase_admin import initialize_app, delete_app, get_app
-API_TOKEN = "5553951620:AAEcqn7mrd2OGmrT6HZNbdrr5Y0wR1RYD1I"
 try:
     default_app = get_app()
 except ValueError:
