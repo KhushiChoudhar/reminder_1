@@ -1,3 +1,4 @@
+import os
 import streamlit as st
 import telebot
 from apscheduler.schedulers.blocking import BlockingScheduler
@@ -20,10 +21,20 @@ try:
     delete_app(default_app)
 except ValueError:
     pass
-cred = firebase_admin.credentials.Certificate("telebot.json")
-default_app = firebase_admin.initialize_app(cred, {
-	'databaseURL': "https://telebot-1ec79-default-rtdb.firebaseio.com"
-	})
+cred = credentials.Certificate({
+  "type": os.environ.get("FIREBASE_TYPE"),
+  "project_id": os.environ.get("FIREBASE_PROJECT_ID"),
+  "private_key_id": os.environ.get("FIREBASE_PRIVATE_KEY_ID"),
+  "private_key": os.environ.get("FIREBASE_PRIVATE_KEY").replace("\\n", "\n"),
+  "client_email": os.environ.get("FIREBASE_CLIENT_EMAIL"),
+  "client_id": os.environ.get("FIREBASE_CLIENT_ID"),
+  "auth_uri": os.environ.get("FIREBASE_AUTH_URI"),
+  "token_uri": os.environ.get("FIREBASE_TOKEN_URI"),
+  "auth_provider_x509_cert_url": os.environ.get("FIREBASE_AUTH_PROVIDER_X509_CERT_URL"),
+  "client_x509_cert_url": os.environ.get("FIREBASE_CLIENT_X509_CERT_URL")
+})
+
+firebase_admin.initialize_app(cred)
 firestore_client = firebase_admin.firestore.client()
 ref_for_user_table = firebase_admin.db.reference("/user")
 ref_for_reminder_table = firebase_admin.db.reference("/reminder")
