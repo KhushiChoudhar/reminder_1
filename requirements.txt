@@ -5,4 +5,4 @@ requests
 bob-telegram-tools	
 matplotlib	
 firebase-admin
-
+os
