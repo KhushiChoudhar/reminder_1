@@ -4,6 +4,6 @@ pyTelegramBotAPI
 requests		
 bob-telegram-tools	
 matplotlib	
-asyncio
+socketio
 firebase-admin
 
