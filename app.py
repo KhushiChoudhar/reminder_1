@@ -9,7 +9,6 @@ from datetime import datetime
 from bob_telegram_tools.bot import TelegramBot
 import matplotlib.pyplot as plt
 import firebase_admin
-import asyncio
 from flask import Flask,request
 from firebase_admin import credentials,db,firestore
 from firebase_admin import initialize_app, delete_app, get_app
