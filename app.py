@@ -2,7 +2,6 @@ import os
 import streamlit as st
 import telebot
 import socketio
-import symbol
 from apscheduler.schedulers.blocking import BlockingScheduler
 from telebot import types
 import re
