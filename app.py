@@ -1,6 +1,7 @@
 import os
 import streamlit as st
 import telebot
+import socketio
 from apscheduler.schedulers.blocking import BlockingScheduler
 from telebot import types
 import re
@@ -538,4 +539,4 @@ def Delete_apscheduler(message):
 bot.enable_save_next_step_handlers(delay=2)
 bot.polling()
 if __name__ == '__main__':
-    app.run(debug=True)
+    socketio.run(app)
