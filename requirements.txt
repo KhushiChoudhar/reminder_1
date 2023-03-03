@@ -6,3 +6,4 @@ bob-telegram-tools
 matplotlib	
 asyncio
 firebase-admin
+streamlit >= 1.9.2 
