@@ -486,7 +486,7 @@ def Complete_reminder_database(message):
 def Run_asyncio_func(message):
     asyncio.run(Visualize_your_progress(msg))
 async def Visualize_your_progress(message):
-    bot_graph = TelegramBot(API_TOKEN, chat_id)
+    bot_graph = TelegramBot(st.secrets["API_TOKEN"], chat_id)
     ref_for_completed = firebase_admin.db.reference("/user/"+user_id+'/Completed_assignment')
     complete = ref_for_completed.get()
     if not ref_for_reminder_individual.get():
