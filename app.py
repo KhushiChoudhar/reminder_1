@@ -484,7 +484,7 @@ def Complete_reminder_database(message):
 @bot.message_handler(commands=['Visualize_your_progress'])
 def Run_asyncio_func(message):
     asyncio.run(Visualize_your_progress(msg))
-def Visualize_your_progress(message):
+async def Visualize_your_progress(message):
     bot_graph = TelegramBot(API_TOKEN, chat_id)
     ref_for_completed = firebase_admin.db.reference("/user/"+user_id+'/Completed_assignment')
     complete = ref_for_completed.get()
