@@ -7,3 +7,4 @@ matplotlib
 asyncio
 firebase-admin
 os
+protobuf==3.20.1
