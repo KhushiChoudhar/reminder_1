@@ -8,3 +8,4 @@ asyncio
 firebase-admin
 streamlit >= 1.9.2 
 protobuf==3.20.1
+gevent
