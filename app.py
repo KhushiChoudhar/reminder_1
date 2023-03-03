@@ -482,8 +482,8 @@ def Complete_reminder_database(message):
     msg = bot.reply_to(message, "Marked the assignment completed \n /Exit")
 
 @bot.message_handler(commands=['Visualize_your_progress'])
-# def Run_asyncio_func(message):
-#     asyncio.run(Visualize_your_progress(msg))
+def Run_asyncio_func(message):
+    asyncio.run(Visualize_your_progress(msg))
 def Visualize_your_progress(message):
     bot_graph = TelegramBot(API_TOKEN, chat_id)
     ref_for_completed = firebase_admin.db.reference("/user/"+user_id+'/Completed_assignment')
@@ -499,7 +499,7 @@ def Visualize_your_progress(message):
     plt.xlabel("Type of Assignment")
     plt.ylabel("No. of Assignment")
     plt.title("Track your Progress")
-    bot_graph.send_plot(plt)
+    await bot_graph.send_plot(plt)
     if(pending<complete):
         msg = bot.reply_to(message, '\U0001F929 \U0001F973 To be honest, I don’t know how you manage to do such a good job every single time. \n/Exit to main menu')
         bot.register_next_step_handler(msg, Send_Welcome)
