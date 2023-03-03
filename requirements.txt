@@ -6,5 +6,3 @@ bob-telegram-tools
 matplotlib	
 asyncio
 firebase-admin
-os
-protobuf
