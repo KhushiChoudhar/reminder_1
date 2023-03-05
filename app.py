@@ -426,7 +426,7 @@ def Add_Reminder_To_DB(message):
     elif categoryId == 3:
         output = '\u2757 Reminder - ' + str(messageContent)+'\u2757'
 
-    reminder_info = {"chatId": message.chat.id, "date": date, "time": time, "message": output, "end_date": date1}
+    reminder_info = {"chatId": message.chat.id, "date": date, "time": time, "message": output, "end_date": date1,"task":categoryId}
     ref_for_reminder_individual.push(reminder_info)
     reminder_info_including_key = ref_for_reminder_individual.get()
     keys=[]
@@ -449,10 +449,22 @@ def Add_Reminder_To_DB(message):
 @bot.message_handler(commands=['View_Reminders'])
 def View_Reminders(message):
     reminder_info_including_key = ref_for_reminder_individual.get()
+    date_fo=datetime.now()
+    currdate=str(date_fo)
     for key in reminder_info_including_key:
-        reminder_info = str(reminder_info_including_key[key]).replace('}', '')
-        reminder_info =reminder_info.replace('{','')
-        msg = bot.reply_to(message,reminder_info)
+        To_be_deleted=key
+        ref_key=reminder_info_including_key[key]
+        enddate=ref_key['end_date']
+        endtime=ref_key['time']
+        if(currdate[0:10]<enddate or (currdate[0:10]==enddate and endtime>currdate[11:16])):
+            reminder_info = str(reminder_info_including_key[key]).replace('}', '')
+            reminder_info =reminder_info.replace('{','')
+            msg = bot.reply_to(message,reminder_info)
+        else:
+            ref_for_reminder_individual.child(key).set({})
+            completedTask = user_info['Completed_assignment']+1
+            ref_for_user_table.child(user_id).update({'Completed_assignment': completedTask})
+
 @bot.message_handler(commands=['Mark_Reminders_Complete'])
 def Mark_Reminders_Complete(message):
     global key_dict
@@ -487,13 +499,28 @@ def Complete_reminder_database(message):
 def Run_asyncio_func(message):
     asyncio.run(Visualize_your_progress(msg))
 async def Visualize_your_progress(message):
-    bot_graph = TelegramBot(st.secrets["API_TOKEN"], chat_id)
+    reminder_info_including_key = ref_for_reminder_individual.get()
+    date_fo=datetime.now()
+    currdate=str(date_fo)
+    for key in reminder_info_including_key:
+        To_be_deleted=key
+        ref_key=reminder_info_including_key[key]
+        enddate=ref_key['end_date']
+        endtime=ref_key['time']
+        if(currdate[0:10]<enddate or (currdate[0:10]==enddate and endtime>currdate[11:16])):
+            continue
+        else:
+            ref_for_reminder_individual.child(key).set({})
+            completedTask = user_info['Completed_assignment']+1
+            ref_for_user_table.child(user_id).update({'Completed_assignment': completedTask})
+
+    bot_graph = TelegramBot(API_TOKEN, chat_id)
     ref_for_completed = firebase_admin.db.reference("/user/"+user_id+'/Completed_assignment')
     complete = ref_for_completed.get()
     if not ref_for_reminder_individual.get():
         pending =0
     else:
-        pending = len(ref_for_reminder_individual.get())-1
+        pending = len(ref_for_reminder_individual.get())
     Bar_name = ["Completed Assignment","Pending Assignment"]
     Values =[complete, pending]
     plt.figure(figsize=(5, 5))
@@ -512,19 +539,29 @@ async def Visualize_your_progress(message):
 @bot.message_handler(commands=['Delete_Reminders'])
 def Delete_Reminders(message):
     global key_dict
+    global currdate
+    global enddate
+    global endtime
     value = message.text
     reminder_info_including_key = ref_for_reminder_individual.get()
     key_dict = {}
     Index_no = 0
     for key in reminder_info_including_key:
+        # end_date = date1[0:4]+"-"+ date1[5:7]+"-"+date1[8:]+" "+time[0:2]+":"+time[3:]+":00"
+        ref_key_delete=reminder_info_including_key[key]
         if (key == 'nothing'):
             break
-        Index_no = Index_no + 1
-        key_dict[Index_no] = key
-        reminder_info = str(reminder_info_including_key[key]).replace('}', '')
-        reminder_info = reminder_info.replace('{', '')
-        reminder_info = reminder_info.replace(':', ' ', 5)
-        msg = bot.reply_to(message, '/'+str(Index_no)+" "+ reminder_info + '\n')
+        date_form=datetime.now()
+        currdate=str(date_form)
+        enddate=ref_key_delete['end_date']
+        endtime=ref_key_delete['time']
+        if(currdate[0:10]<enddate or (currdate[0:10]==enddate and endtime>currdate[11:16])):
+            Index_no = Index_no + 1
+            key_dict[Index_no] = key
+            reminder_info = str(reminder_info_including_key[key]).replace('}', '')
+            reminder_info = reminder_info.replace('{', '')
+            reminder_info = reminder_info.replace(':', ' ', 5)
+            msg = bot.reply_to(message, '/'+str(Index_no)+" "+ reminder_info + '\n')
     msg = bot.reply_to(message, "Please select a reminder by clicking the unique identification number \n /Exit")
     bot.register_next_step_handler(msg, Delete_apscheduler)
     bot.register_next_step_handler(msg, Delete_reminder_database)
@@ -536,9 +573,8 @@ def Delete_apscheduler(message):
     sched.remove_job(job_id)
     bot.reply_to(message, "Deleting Reminder \U0001F929 \U0001F973  \n /Exit")
 
+
 bot.enable_save_next_step_handlers(delay=2)
 bot.polling()
 if __name__ == '__main__':
-    http_server = WSGIServer(('', 5000), app)
-    http_server.serve_forever()
-
+    app.run()
